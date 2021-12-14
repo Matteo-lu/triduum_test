@@ -12,18 +12,6 @@ let app = new Vue({
             results: []
         }
     },
-    // mounted () {
-    //     axios
-    //     .get('http://127.0.0.1:5000/api/v1/courses')
-    //     .then(response => {
-    //         this.info = response.data.course
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //         this.errored = true
-    //     })
-    //     .finally(() => this.loading = false)
-    // },
     methods:{
         checkForm: function (e) {
 
