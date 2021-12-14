@@ -22,10 +22,6 @@
                         <img src="images/logo.png">
                     </div>
 
-                    <div class="errors" v-if="errors.length">
-                        <p v-for="error in errors"><i>{{ error }}</i></p>
-                    </div>
-
                     <p>
                         <input
                         v-model="keyword"
@@ -34,6 +30,10 @@
                         placeholder="Search"
                         >
                     </p>
+
+                    <div class="errors" v-if="errors.length">
+                        <p v-for="error in errors"><i>{{ error }}</i></p>
+                    </div>
 
                     <p>
                         <input

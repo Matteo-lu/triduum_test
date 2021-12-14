@@ -25,8 +25,9 @@ h1 {
 
 img {
     width: 230px;
-    top: 20px;
-    right: 80px;
+    top: 0px;
+    right: 60px;
+    position: absolute;
 }
 
 div.results {
@@ -60,7 +61,7 @@ input[type=submit]:hover {
 input[type=text], select {
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin-top: 150px;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
