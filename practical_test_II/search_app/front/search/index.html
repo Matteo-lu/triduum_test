@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="styles.css" rel="stylesheet" type="text/css">
+        <title>Search</title>
+    </head>
+    <body>
+        <div id="app">
+
+            <section v-if="errored">
+                <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+            </section>
+
+            <section v-else>
+
+                <form
+                class="create-user"
+                @submit="checkForm"
+                >
+                    <div class="logo">
+                        <img src="images/logo.png">
+                    </div>
+
+                    <p>
+                        <input
+                        v-model="post.keyword"
+                        id="email"
+                        type="text"
+                        placeholder="Search"
+                        >
+                    </p>
+
+                    <p>
+                        <input
+                        type="submit"
+                        value="Submit"
+                        >
+                    </p>
+
+                    <div class="results" v-if="results.length">
+                        <ul>
+                            <li v-for="result in results" v-for="snippet in results.snippet">
+                                {{ result.pageid }} - <b>{{ result.title }}</b>
+                                <p v-html="result.snippet"></p>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <button onclick="document.location='../report/index.html'">
+                        Report
+                    </button>
+                </form>
+
+
+            </section>
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>
