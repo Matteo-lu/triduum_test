@@ -34,7 +34,6 @@ def search_list(request):
 
     elif request.method == 'POST':
         searches_data = JSONParser().parse(request)
-        print(searches_data)
         searches_serializer = SearchAppSerializer(data=searches_data)
         if searches_serializer.is_valid():
             searches_serializer.save()
@@ -46,7 +45,6 @@ def search_list(request):
             searches_serializer.errors, \
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
 @api_view(['GET'])
 def search_info(request):
@@ -77,3 +75,33 @@ def search_info(request):
                     .order_by('-created_at').first().results
             inform.append(search)
         return JsonResponse(inform, safe=False)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def search_by_id(request, pk):
+    """
+    View to retrieve, update and delete search by id
+    """
+    print("Entramos pa")
+    try:
+        search = Search.objects.get(id=pk)
+    except Search.DoesNotExist:
+        return JsonResponse(
+                            {'message': 'The element does not exist'},
+                            status=status.HTTP_404_NOT_FOUND
+                            )
+    if (request.method == 'GET'):
+        search_serializer = SearchAppSerializer(search)
+        return JsonResponse(search_serializer.data, safe=False)
+
+    if (request.method == 'PUT'):
+        for att, value in request.data.items():
+            if (hasattr(search, att)):
+                setattr(search, att, value)
+        search_serializer = SearchAppSerializer(search)
+        return JsonResponse(search_serializer.data, safe=False)
+
+    if (request.method == 'DELETE'):
+        search.delete()
+        return JsonResponse(
+                            {'message': 'Successfully deleted'}
+                            )
