@@ -25,7 +25,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C
 ```
 
-## About the Service
+## API service
 
 The service is just a simple Searches REST service. It uses a mySQL database to store the data.  If your database connection properties work, you can call some REST endpoints through localhost on **port 8000**.
 
@@ -40,7 +40,7 @@ http://localhost:8000/api/v1/
 ```
 GET
 http://localhost:8000/search
-Response: HTTP 200 (OK)
+status code: HTTP 200 (OK)
 ```
 Response:
 ```
@@ -70,8 +70,8 @@ Response:
 
 ```
 POST
-http://localhost:8080/search/inform
-Response: HTTP 201 (Created)
+http://localhost:8000/search/inform
+status code: HTTP 201 (Created)
 ```
 Request:
 ```
@@ -84,8 +84,8 @@ Request:
 
 ```
 GET
-http://localhost:8080/search/info
-Response: HTTP 200 (OK)
+http://localhost:8000/search/info
+status code: HTTP 200 (OK)
 ```
 Respose:
 ```
@@ -116,6 +116,60 @@ Respose:
     }
 ]
 ```
+### Get, update and delete search by id
+```
+GET
+http://localhost:8000/search/<id>
+status code: HTTP 200 (OK)
+```
+Response:
+```
+{
+    "id": "a44f7ad8-7059-4472-ba41-2cc5d3fd4e16",
+    "keyword": "Avocado",
+    "created_at": "2021-12-15T17:40:52.421949-05:00",
+    "results": 10
+}
 
+```
+```
+PUT
+http://localhost:8000/search/<id>
+status code: HTTP 200 (OK)
+```
+Request:
+```
+{
+    "keyword": "Javascript"
+}
+
+```
+Response:
+```
+{
+    "id": "a44f7ad8-7059-4472-ba41-2cc5d3fd4e16",
+    "keyword": "Javascript",
+    "created_at": "2021-12-15T17:40:52.421949-05:00",
+    "results": 10
+}
+
+```
+```
+DELETE
+http://localhost:8000/search/<id>
+status code: HTTP 200 (OK)
+```
+Response:
+```
+{
+    "message": "Successfully deleted"
+}
+```
+## Report Interface
+To run it enter into the ```search``` directory inside the ```front``` directory and exectue with a live server the index file. You'll see a simple interface with a search bar. Perform multiple searches to feed the report interface. Access the reporting interface through the report button and you will see a table with the information of the search carried out that complies with the following format:
+```
+Item | Keyword | Searches number | first date search | Last date search | Results number
+-----+---------+-----------------+-------------------+------------------+---------------
+```
 
 # Questions and Comments: mateolondono.u@gmail.com
