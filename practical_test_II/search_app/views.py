@@ -1,3 +1,8 @@
+"""
+Module containing the endpint views for the API
+"""
+
+
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
@@ -10,8 +15,13 @@ from rest_framework.decorators import api_view
 from django.db.models import Count
 
 # Create your views here.
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'POST'])
 def search_list(request):
+    """View to retrieve and create searches objects
+
+    Returns:
+        json: search objects representation with code response
+    """
     if request.method == 'GET':
         searches = Search.objects.all()
 
@@ -28,24 +38,42 @@ def search_list(request):
         searches_serializer = SearchAppSerializer(data=searches_data)
         if searches_serializer.is_valid():
             searches_serializer.save()
-            return JsonResponse(searches_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(searches_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    elif request.method == 'DELETE':
-        Search.objects.all().delete()
+            return JsonResponse(
+                searches_serializer.data, \
+                    status=status.HTTP_201_CREATED
+                )
+        return JsonResponse(
+            searches_serializer.errors, \
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 @api_view(['GET'])
 def search_info(request):
+    """View to retrieve searches report
+
+    Returns:
+        json: report with formatted fields
+    """
     if request.method == 'GET':
         inform = []
-        count = Search.objects.values_list('keyword').annotate(keyword_count=Count('keyword')).order_by('-keyword_count')
+        count = Search.objects.values_list('keyword')\
+            .annotate(keyword_count=Count('keyword'))\
+            .order_by('-keyword_count')
         for i in range(0, len(count)):
             search = {}
             search["item"] = i
             search["keyword"] = count[i][0]
             search["search_number"] = count[i][1]
-            search["last_date"] = Search.objects.filter(keyword=count[i][0]).order_by('-created_at').first().created_at.strftime("%c")
-            search["first_date"] = Search.objects.filter(keyword=count[i][0]).order_by('-created_at').last().created_at.strftime("%c")
-            search["results"] = Search.objects.filter(keyword=count[i][0]).order_by('-created_at').first().results
+            search["last_date"] = Search.objects.filter(
+                keyword=count[i][0])\
+                    .order_by('-created_at').first().\
+                        created_at.strftime("%c")
+            search["first_date"] = Search.objects.filter(
+                keyword=count[i][0]).order_by('-created_at').\
+                    last().created_at.strftime("%c")
+            search["results"] = Search.objects.filter(
+                keyword=count[i][0])\
+                    .order_by('-created_at').first().results
             inform.append(search)
         return JsonResponse(inform, safe=False)

@@ -1,13 +1,16 @@
+"""
+Module containg the Search class
+"""
+
+
 from django.db import models
 import uuid
 
 # Create your models here.
 
 class Search(models.Model):
-    """[summary]
-
-    Args:
-        models ([type]): [description]
+    """
+    Search model
     """
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
@@ -19,9 +22,9 @@ class Search(models.Model):
         ordering = ('created_at',)
 
     def __str__(self):
-        """[summary]
+        """string representation
 
         Returns:
-            [type]: [description]
+            str: string representation
         """
         return "[{}]: ({}) {}".format(self.__name__, self.id, self.keyword)
